@@ -43,7 +43,7 @@ module Arel
       return @attributes if defined?(@attributes)
       if table_exists?
         @attributes ||= begin
-          attrs = columns.collect do |column|
+          attrs = columns.select{|it| it.sql_type != 'tsvector'}.collect do |column|
             Sql::Attributes.for(column).new(column, self, column.name.to_sym)
           end
           Header.new(attrs)
